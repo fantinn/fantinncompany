@@ -1,0 +1,138 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.85rem, 2vh, 1.3rem);
+  height: 100%;
+  min-height: 0;
+}
+
+/* O aparelho flutua sobre a página — sem moldura. */
+.stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+}
+
+.stage canvas {
+  touch-action: pan-y;
+}
+
+/* ---------- console ---------- */
+
+.console {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(0.9rem, 2.5vw, 2rem);
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+
+.switcher {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.tab {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition:
+    background 0.22s var(--ease-out),
+    color 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out);
+}
+
+.tab:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.tab[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.layer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.1rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.22s var(--ease-out);
+}
+
+.layer:hover,
+.layer[data-lit="true"] {
+  opacity: 1;
+}
+
+.num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step--2);
+  color: var(--gray);
+}
+
+.swatch {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex: none;
+  transition: transform 0.28s var(--ease-out);
+}
+
+.layer[data-lit="true"] .swatch {
+  transform: scale(1.4);
+}
+
+.name {
+  font-size: var(--step--1);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.note {
+  font-size: var(--step--1);
+  color: var(--gray);
+  min-height: 2.6em;
+  max-width: 54ch;
+  text-wrap: pretty;
+}
+
+.note::before {
+  content: "→ ";
+  color: var(--red-deep);
+}
+
+@media (max-width: 52rem) {
+  .console {
+    gap: 0.75rem 1.1rem;
+  }
+
+  .legend {
+    gap: 0.1rem 0.95rem;
+  }
+}

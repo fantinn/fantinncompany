@@ -1,0 +1,545 @@
+/* ============================ nav ============================ */
+
+.nav {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--bone) 85%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: 3.9rem;
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--step-0);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.markLogo {
+  width: auto;
+  height: 1.1rem;
+  color: var(--red);
+}
+
+.markCo {
+  color: var(--red);
+}
+
+.navLinks {
+  display: flex;
+  gap: 1.7rem;
+  font-size: var(--step--1);
+  color: var(--gray);
+}
+
+.navLinks a {
+  transition: color 0.2s var(--ease-out);
+}
+
+.navLinks a:hover {
+  color: var(--ink);
+}
+
+.navEnd {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gridToggle {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--gray);
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
+}
+
+.gridToggle:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.gridToggle[aria-pressed="true"] {
+  color: var(--red-deep);
+  border-color: var(--red-deep);
+}
+
+/* ============================ botões ============================ */
+
+.btn,
+.btnSmall {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: var(--red-deep);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition:
+    background 0.22s var(--ease-out),
+    transform 0.22s var(--ease-out);
+}
+
+.btn {
+  padding: 0.95rem 1.6rem;
+  font-size: var(--step--1);
+}
+
+.btnSmall {
+  padding: 0.5rem 1rem;
+  font-size: var(--step--2);
+}
+
+.btn:hover,
+.btnSmall:hover {
+  background: var(--ink);
+  transform: translateY(-2px);
+}
+
+.btnGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.95rem 0.25rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border-bottom: 2px solid var(--rule);
+  transition:
+    color 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out);
+}
+
+.btnGhost:hover {
+  color: var(--fg);
+  border-color: var(--red);
+}
+
+/* ============================ hero ============================ */
+
+.hero {
+  min-height: 210svh;
+  background: var(--bone);
+}
+
+.heroSticky {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gutter);
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-block: 4.9rem 1.75rem;
+}
+
+.heroCopy {
+  grid-column: 1 / span 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  align-items: flex-start;
+}
+
+.heroTitle {
+  font-size: clamp(2.3rem, 4.4vw, 3.9rem);
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  margin-top: 0.4rem;
+}
+
+.heroPiece {
+  grid-column: 7 / span 6;
+  align-self: stretch;
+  min-height: 0;
+  display: flex;
+}
+
+/* ============================ cabeçalhos ============================ */
+
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4rem);
+  max-width: 34ch;
+}
+
+.h2 {
+  font-size: var(--step-4);
+}
+
+/* ============================ números ============================ */
+
+.statsSection {
+  --section-py: clamp(2.75rem, 6vh, 4rem);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--red);
+}
+
+.statValue {
+  font-size: var(--step-5);
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* ============================ serviços ============================ */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.75rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  transition:
+    border-color 0.25s var(--ease-out),
+    transform 0.25s var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--red);
+  transform: translateY(-3px);
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1.5px solid var(--red);
+  border-radius: 50%;
+  color: var(--red);
+  margin-bottom: 0.4rem;
+}
+
+.cardIcon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.cardTitle {
+  font-size: var(--step-2);
+  font-weight: 800;
+}
+
+.cardBody {
+  font-size: var(--step--1);
+  color: var(--gray);
+  text-wrap: pretty;
+}
+
+.cardList {
+  list-style: none;
+  padding: 1rem 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+
+.cardList li::before {
+  content: "▸ ";
+  color: var(--red);
+}
+
+/* ============================ trabalho ============================ */
+
+.table {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 9rem 2fr 2rem;
+  gap: var(--gutter);
+  align-items: baseline;
+  padding: 1.55rem 1rem;
+  margin-inline: -1rem;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.28s var(--ease-out);
+}
+
+.row:hover {
+  background: var(--red-deep);
+}
+
+.rowYear,
+.rowKind {
+  color: var(--muted);
+  transition: color 0.28s var(--ease-out);
+}
+
+.rowName {
+  font-size: var(--step-2);
+  font-weight: 800;
+}
+
+.rowWhat {
+  font-size: var(--step--1);
+  color: var(--muted);
+  text-wrap: pretty;
+  transition: color 0.28s var(--ease-out);
+}
+
+.row:hover .rowYear,
+.row:hover .rowKind,
+.row:hover .rowWhat {
+  color: color-mix(in srgb, #fff 82%, transparent);
+}
+
+.rowArrow {
+  justify-self: end;
+  color: var(--red);
+  opacity: 0;
+  transform: translate(-0.4rem, 0.3rem);
+  transition:
+    opacity 0.28s var(--ease-out),
+    transform 0.28s var(--ease-out),
+    color 0.28s var(--ease-out);
+}
+
+.row:hover .rowArrow {
+  opacity: 1;
+  transform: none;
+  color: #fff;
+}
+
+/* ============================ processo ============================ */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gutter);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.steps > li {
+  border-top: 3px solid var(--ink);
+  padding-top: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.steps > li:first-child {
+  border-top-color: var(--red);
+}
+
+.stepWhen {
+  color: var(--red-deep);
+}
+
+.stepTitle {
+  font-size: var(--step-2);
+  font-weight: 800;
+}
+
+.stepBody {
+  font-size: var(--step--1);
+  color: var(--gray);
+  text-wrap: pretty;
+}
+
+/* ============================ contato ============================ */
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contactTitle {
+  font-size: var(--step-5);
+  max-width: 16ch;
+}
+
+.mail {
+  font-family: var(--font-body);
+  font-size: clamp(1.15rem, 2.6vw, 1.8rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-block: 0.9rem 0.5rem;
+  border-bottom: 3px solid var(--red);
+  transition: color 0.22s var(--ease-out);
+}
+
+.mail:hover {
+  color: var(--red);
+}
+
+.facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 2rem;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+
+.factLink {
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.2s var(--ease-out);
+}
+
+.factLink:hover {
+  color: var(--red);
+}
+
+/* ============================ rodapé ============================ */
+
+.footer {
+  background: var(--bg);
+  color: var(--fg);
+  border-top: 1px solid var(--rule);
+  padding-block: 1.7rem;
+}
+
+.footerInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.footerInner a:hover {
+  color: var(--red);
+}
+
+/* ============================ responsivo ============================ */
+
+@media (max-width: 68rem) {
+  .steps,
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .row {
+    grid-template-columns: 4.5rem 1fr 2rem;
+    row-gap: 0.45rem;
+  }
+
+  .rowKind,
+  .rowWhat {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 52rem) {
+  .navLinks {
+    display: none;
+  }
+
+  .hero {
+    min-height: 195svh;
+  }
+
+  .heroInner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-block: 4.6rem 1.25rem;
+  }
+
+  .heroCopy {
+    gap: 0.8rem;
+    flex: none;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.9rem, 8vw, 2.9rem);
+  }
+
+  .heroPiece {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .actions {
+    margin-top: 0.1rem;
+    gap: 1rem;
+  }
+
+  .stats,
+  .steps,
+  .cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stats {
+    gap: 1.25rem;
+  }
+}
