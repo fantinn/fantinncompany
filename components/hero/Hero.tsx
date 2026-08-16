@@ -221,6 +221,13 @@ export default function Hero() {
         />
       </div>
 
+      {/* feixes — entre a rocha do fundo e o aparelho */}
+      <div className={s.beams} aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
+
       {/* luz de baixo: assenta o aparelho na cena em vez de deixá-lo
           recortado sobre o fundo */}
       <div className={s.underglow} aria-hidden="true" />
@@ -260,7 +267,7 @@ export default function Hero() {
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: "cover", objectPosition: "52% 12%" }}
+          style={{ objectFit: "cover", objectPosition: "44% 20%" }}
         />
       </div>
 
