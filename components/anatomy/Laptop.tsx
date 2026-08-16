@@ -21,7 +21,7 @@ const SCREEN_H = 1.99;
 const LID_OPEN = -0.28; // ~106° — a inclinação em que se deixa um notebook
 const LID_SHUT = Math.PI / 2;
 
-const CASE = "#3b3e44"; // alumínio anodizado escuro
+const CASE = "#c2c7cc"; // alumínio prata
 
 type Props = {
   anatomy: Anatomy;

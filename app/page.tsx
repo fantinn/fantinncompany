@@ -1,22 +1,14 @@
-import Chrome from "@/components/Chrome";
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import { Stats, Services, Work, Process, Contact, Footer } from "@/components/Sections";
+import Hero from "@/components/hero/Hero";
 
+/* Só a primeira dobra por enquanto. Os componentes das outras seções
+   continuam no repositório, fora da página. */
 export default function Home() {
   return (
-    <>
-      <Chrome />
-      <Nav />
-      <main>
-        <Hero />
-        <Stats />
-        <Services />
-        <Work />
-        <Process />
-        <Contact />
-      </main>
-      <Footer />
-    </>
+    <main>
+      <Hero />
+      {/* Espaço para a transição de saída acontecer. Sai quando a próxima
+          seção existir. */}
+      <div style={{ height: "70vh" }} />
+    </main>
   );
 }

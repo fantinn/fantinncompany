@@ -26,7 +26,7 @@ export default function Poster({ anatomy }: { anatomy: Anatomy }) {
     const lidH = 424;
     const lidX = (W - lidW) / 2;
     const lidY = 24;
-    ctx.fillStyle = "#3b3e44";
+    ctx.fillStyle = "#c2c7cc";
     ctx.beginPath();
     ctx.roundRect(lidX, lidY, lidW, lidH, 14);
     ctx.fill();
@@ -54,7 +54,7 @@ export default function Poster({ anatomy }: { anatomy: Anatomy }) {
     const baseY = lidY + lidH;
     const half = lidW / 2;
     const cx = W / 2;
-    ctx.fillStyle = "#33363b";
+    ctx.fillStyle = "#b3b8be";
     ctx.beginPath();
     ctx.moveTo(cx - half, baseY);
     ctx.lineTo(cx + half, baseY);
@@ -64,7 +64,7 @@ export default function Poster({ anatomy }: { anatomy: Anatomy }) {
     ctx.fill();
 
     // Recorte frontal
-    ctx.fillStyle = "#25272b";
+    ctx.fillStyle = "#9aa0a7";
     ctx.beginPath();
     ctx.ellipse(cx, baseY + 30, 52, 7, 0, 0, Math.PI);
     ctx.fill();

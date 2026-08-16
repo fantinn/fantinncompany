@@ -116,7 +116,7 @@ export function deckTexture(): THREE.CanvasTexture {
   };
 
   // Grelhas de som: colunas de furos dos dois lados do teclado.
-  ctx.fillStyle = "#1e2023";
+  ctx.fillStyle = "#4c5158";
   const holeR = 3.2;
   const step = 13;
   for (const x0 of [34, W - 34 - 88]) {
@@ -167,9 +167,9 @@ export function deckTexture(): THREE.CanvasTexture {
   const tpH = 320;
   const tpX = (W - tpW) / 2;
   const tpY = 520;
-  ctx.fillStyle = "rgba(24,26,29,0.35)";
+  ctx.fillStyle = "rgba(90,96,104,0.16)";
   round(tpX, tpY, tpW, tpH, 14);
-  ctx.strokeStyle = "rgba(18,19,22,0.75)";
+  ctx.strokeStyle = "rgba(72,77,84,0.5)";
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.roundRect(tpX, tpY, tpW, tpH, 14);

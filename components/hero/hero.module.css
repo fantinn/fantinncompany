@@ -1,0 +1,1107 @@
+/* ============================================================
+   HERO — FANTINCO
+   Camadas, do fundo para a frente: vinheta, código, brilho,
+   rocha, objeto 3D, conteúdo. Cada uma se move num fator
+   diferente do ponteiro, e é essa diferença que cria a
+   profundidade.
+   ============================================================ */
+
+.hero {
+  --pad: clamp(1.5rem, 5vw, 5rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --red: #ec1b2e;
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #050506;
+  color: #fff;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 20;
+  padding: 0.7rem 1.1rem;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease);
+}
+
+.skip:focus-visible {
+  transform: none;
+}
+
+/* ---------- camada 1: fundo ---------- */
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 90% at 78% 46%, rgba(28, 29, 33, 0.55), transparent 62%),
+    radial-gradient(80% 70% at 8% 24%, rgba(20, 21, 24, 0.5), transparent 70%);
+}
+
+/* ---------- camada 2: código ---------- */
+
+.codeLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  will-change: transform;
+  transform: translate3d(calc(var(--px, 0) * -8px), calc(var(--py, 0) * -8px), 0);
+}
+
+.code {
+  position: absolute;
+  inset-block-start: -12%;
+  inset-inline-start: 46%;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.8;
+  /* Precisa ficar no limiar do visível: presente, nunca legível. */
+  color: #0f1013;
+  white-space: pre;
+}
+
+/* ---------- camada 3: brilho ---------- */
+
+/* O pai carrega o parallax; o filho, a respiração. Separados, os dois
+   não disputam a mesma propriedade a cada quadro. */
+.glowShift {
+  position: absolute;
+  inset-inline-end: 2%;
+  inset-block-start: 50%;
+  z-index: 1;
+  width: min(46rem, 78vw);
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transform: translateY(-50%)
+    translate3d(calc(var(--px, 0) * -20px), calc(var(--py, 0) * -20px), 0);
+}
+
+.glow {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle,
+    rgba(236, 27, 46, 0.32),
+    rgba(236, 27, 46, 0.07) 40%,
+    transparent 66%
+  );
+  filter: blur(40px);
+}
+
+/* ---------- rocha ---------- */
+
+/* ---------- fumaça ---------- */
+
+/* Massas de névoa em deriva muito longa. Feitas de gradiente porque
+   uma textura pesaria centenas de KB para o mesmo efeito. */
+.smoke {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(calc(var(--px, 0) * -10px), calc(var(--py, 0) * -10px), 0);
+}
+
+.smoke span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.smokeA {
+  inset-inline-end: 4%;
+  inset-block-end: 6%;
+  width: 46rem;
+  height: 30rem;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    rgba(236, 27, 46, 0.18),
+    rgba(120, 16, 26, 0.09) 45%,
+    transparent 72%
+  );
+}
+
+.smokeB {
+  inset-inline-end: 28%;
+  inset-block-end: 26%;
+  width: 34rem;
+  height: 22rem;
+  background: radial-gradient(
+    ellipse at 40% 50%,
+    rgba(150, 152, 160, 0.08),
+    rgba(90, 92, 100, 0.04) 50%,
+    transparent 74%
+  );
+}
+
+/* ---------- rocha ao fundo ---------- */
+
+/* Desfocada e recuada: é a distância entre o aparelho e o horizonte. */
+.cliff {
+  position: absolute;
+  inset-block-start: 2%;
+  inset-inline-end: -6%;
+  z-index: 2;
+  width: 66%;
+  height: 66%;
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(4px) saturate(0.82);
+  will-change: transform;
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -8px), 0);
+  /* Some antes de chegar na coluna de texto. */
+  mask-image: linear-gradient(to right, transparent, #000 34%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 34%, #000 82%, transparent);
+}
+
+/* ---------- rocha em primeiro plano ---------- */
+
+/* Quase estática: o que está mais perto do olho é o que menos se move.
+   Baixa de propósito — só encosta na base do aparelho, nunca na tela. */
+.ridge {
+  position: absolute;
+  inset-block-end: -3%;
+  inset-inline: 0;
+  z-index: 4;
+  height: 30%;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(
+    calc(var(--px, 0) * -5px),
+    calc(var(--py, 0) * -3px + var(--sp, 0) * -22px),
+    0
+  );
+  mask-image:
+    linear-gradient(to right, transparent 4%, #000 32%),
+    linear-gradient(to bottom, transparent 2%, #000 34%);
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 4%, #000 32%),
+    linear-gradient(to bottom, transparent 2%, #000 34%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+/* ---------- luz sob o aparelho ---------- */
+
+/* Fica atrás do laptop e vaza pelas bordas de baixo — é o que faz ele
+   pertencer à cena em vez de flutuar recortado sobre o fundo. */
+.underglow {
+  position: absolute;
+  inset-inline-end: 10%;
+  inset-block-end: 14%;
+  z-index: 2;
+  width: min(42rem, 62vw);
+  height: 15rem;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(236, 27, 46, 0.34),
+    rgba(236, 27, 46, 0.11) 42%,
+    transparent 70%
+  );
+  filter: blur(46px);
+  will-change: transform;
+  transform: translate3d(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -8px), 0);
+}
+
+/* ---------- camada 4: o objeto ---------- */
+
+.stage {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 3;
+  width: 56%;
+  opacity: 0;
+}
+
+.poster {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+/* ---------- header ---------- */
+
+.header {
+  position: relative;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.1rem, 2.4vw, 1.9rem) var(--pad);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: #fff;
+  opacity: 0;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid #26272c;
+  border-radius: 50%;
+  color: var(--red);
+  flex: none;
+}
+
+.brandMark svg {
+  width: 0.85rem;
+  height: auto;
+}
+
+.brandName {
+  font-family: var(--f-display), sans-serif;
+  font-weight: 800;
+  font-size: 1.32rem;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.brandCo {
+  color: var(--red);
+}
+
+.menu {
+  display: flex;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-inline-start: auto;
+  margin-inline-end: clamp(1.5rem, 3vw, 3rem);
+}
+
+.menu a {
+  position: relative;
+  padding-block: 0.35rem;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  opacity: 0;
+}
+
+/* A linha cresce da esquerda; o texto não muda de cor. */
+.menu a::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+
+.menu a:hover::after,
+.menu a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--red);
+  background: transparent;
+  color: #fff;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  opacity: 0;
+  transition: background 0.24s var(--ease);
+}
+
+.cta span {
+  transition: transform 0.24s var(--ease);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: var(--red);
+}
+
+.cta:hover span,
+.cta:focus-visible span {
+  transform: translate(3px, -3px);
+}
+
+/* ---------- menu de telas estreitas ---------- */
+
+.burger {
+  display: none;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid #26272c;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.burgerBars {
+  display: grid;
+  gap: 5px;
+  width: 1.15rem;
+}
+
+.burgerBars i {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.26s var(--ease);
+}
+
+.burgerBars[data-open="true"] i:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.burgerBars[data-open="true"] i:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 5rem var(--pad) 3rem;
+  background: #08080a;
+}
+
+.sheet[hidden] {
+  display: none;
+}
+
+.sheet nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet a {
+  padding-block: 1rem;
+  border-bottom: 1px solid #1c1d21;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sheetCta {
+  margin-top: 1.75rem;
+  padding: 1.05rem 1.75rem;
+  border: 0;
+  background: var(--red);
+  text-align: center;
+  font-size: 0.9rem !important;
+  letter-spacing: 0.11em;
+}
+
+/* ---------- conteúdo ---------- */
+
+.content {
+  position: relative;
+  z-index: 5;
+  align-self: center;
+  width: min(100%, 54rem);
+  padding-inline: var(--pad);
+  padding-block: clamp(1rem, 3vh, 2.5rem);
+  will-change: transform, opacity;
+  /* A rolagem afasta o conteúdo antes do próximo trecho. */
+  opacity: calc(1 - var(--sp, 0) * 1.9);
+  transform: translate3d(0, calc(var(--sp, 0) * -46px), 0);
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 0 0 clamp(1rem, 2.4vh, 1.6rem);
+  font-family: var(--f-display), sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  opacity: 0;
+}
+
+.kickerRule {
+  width: 2.2rem;
+  height: 2px;
+  background: var(--red);
+  flex: none;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 800;
+  font-variation-settings: "wdth" 88;
+  font-size: clamp(2.1rem, 4.9vw, 4.3rem);
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  text-transform: uppercase;
+}
+
+/* Cada frase é uma linha só — quebrar no meio arruína o desenho. */
+.line,
+.wipe {
+  white-space: nowrap;
+}
+
+/* Cada linha sobe por trás de uma máscara. */
+.lineWrap {
+  display: block;
+  overflow: hidden;
+}
+
+.line {
+  display: block;
+  transform: translateY(105%);
+}
+
+/* A terceira é revelada na horizontal, sem piscar. */
+.wipe {
+  display: block;
+  color: var(--red);
+  clip-path: inset(0 100% 0 0);
+}
+
+.lede {
+  max-width: 30rem;
+  margin: clamp(1.2rem, 3vh, 2rem) 0 0;
+  font-size: clamp(0.98rem, 1.15vw, 1.12rem);
+  line-height: 1.6;
+  color: #b0b4ba;
+  opacity: 0;
+}
+
+/* ---------- ações ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1.2rem, 2.6vw, 2.4rem);
+  margin-top: clamp(1.6rem, 3.4vh, 2.6rem);
+  opacity: 0;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.05rem 2rem;
+  border-radius: 3px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.primary span {
+  transition: transform 0.25s var(--ease);
+}
+
+.primary:hover,
+.primary:focus-visible {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(236, 27, 46, 0.28);
+}
+
+.primary:hover span,
+.primary:focus-visible span {
+  transform: translate(4px, -4px);
+}
+
+.primary:active {
+  transform: scale(0.985);
+}
+
+.secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.05rem 0.2rem;
+  color: #fff;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.secondary::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0.55rem;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0.42);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+
+.secondary:hover::after,
+.secondary:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.secondary span {
+  transition: transform 0.25s var(--ease);
+}
+
+.secondary:hover span,
+.secondary:focus-visible span {
+  transform: translate(4px, -4px);
+}
+
+/* ---------- métricas ---------- */
+
+/* Três colunas na mesma fileira: quebrar deixa a última órfã. */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.2vw, 2rem);
+  max-width: 40rem;
+  margin: clamp(1.8rem, 4vh, 3rem) 0 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0;
+}
+
+.metrics > li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  padding-inline-start: clamp(0.85rem, 1.6vw, 1.4rem);
+  border-inline-start: 1px solid #24252a;
+}
+
+.metrics > li:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+.metricIcon {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--red);
+  margin-bottom: 0.5rem;
+}
+
+.metricIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.metricValue {
+  margin: 0;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.1vw, 1.72rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.metricWord {
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.metricLabel {
+  margin: 0;
+  font-size: 0.73rem;
+  line-height: 1.45;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #8a8e95;
+}
+
+/* ---------- indicador de rolagem ---------- */
+
+.scrollHint {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding-block-end: 1.75rem;
+  font-family: var(--f-display), sans-serif;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #8b8f96;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.scrollHint[data-gone="true"] {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.scrollArrow {
+  width: 1.05rem;
+  height: auto;
+  color: var(--red);
+  animation: nudge 2.2s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+}
+
+.scrollTrack {
+  position: relative;
+  width: 1px;
+  height: 3.4rem;
+  overflow: hidden;
+  background: #24252a;
+}
+
+.scrollTrack::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 42%;
+  background: var(--red);
+  animation: trickle 2.2s var(--ease) infinite;
+}
+
+/* ============================================================
+   entrada — cerca de 1,4s do logo às métricas
+   ============================================================ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lineUp {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes wipeIn {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes trickle {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(240%);
+  }
+}
+
+.hero[data-ready="true"] .brand {
+  animation: rise 0.66s var(--ease) both;
+}
+
+.hero[data-ready="true"] .menu a {
+  animation: rise 0.5s var(--ease) both;
+  animation-delay: calc(90ms + var(--i) * 45ms);
+}
+
+.hero[data-ready="true"] .cta,
+.hero[data-ready="true"] .burger {
+  animation: rise 0.55s var(--ease) 260ms both;
+}
+
+.hero[data-ready="true"] .kicker {
+  animation: rise 0.6s var(--ease) 200ms both;
+}
+
+.hero[data-ready="true"] .line {
+  animation: lineUp 0.86s var(--ease) both;
+  animation-delay: var(--d);
+}
+
+.hero[data-ready="true"] .wipe {
+  animation: wipeIn 0.78s var(--ease) 540ms both;
+}
+
+.hero[data-ready="true"] .lede {
+  animation: rise 0.66s var(--ease) 720ms both;
+}
+
+.hero[data-ready="true"] .actions {
+  animation: rise 0.66s var(--ease) 820ms both;
+}
+
+.hero[data-ready="true"] .metrics {
+  animation: rise 0.7s var(--ease) 960ms both;
+}
+
+.hero[data-ready="true"] .scrollHint {
+  animation: fade 0.7s var(--ease) 1180ms both;
+}
+
+.hero[data-ready="true"] .stage {
+  animation: fade 0.9s var(--ease) 340ms both;
+}
+
+@keyframes fadeCliff {
+  to {
+    opacity: 0.68;
+  }
+}
+
+@keyframes fadeSmoke {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Deriva longa o bastante para não se perceber o movimento. */
+@keyframes driftA {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-3%, -2%, 0) scale(1.12);
+  }
+}
+
+@keyframes driftB {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(4%, 3%, 0) scale(1);
+  }
+}
+
+.hero[data-ready="true"] .cliff {
+  animation: fadeCliff 1.2s var(--ease) 300ms both;
+}
+
+.hero[data-ready="true"] .ridge {
+  animation: fade 1.1s var(--ease) 480ms both;
+}
+
+.hero[data-ready="true"] .underglow {
+  animation: fade 1.4s var(--ease) 640ms both;
+}
+
+/* A atmosfera entra depois do objeto, como pede a sequência. */
+.hero[data-ready="true"] .smoke {
+  animation: fadeSmoke 1.8s var(--ease) 1050ms both;
+}
+
+.hero[data-ready="true"] .smokeA {
+  animation: driftA 19s ease-in-out infinite;
+}
+
+.hero[data-ready="true"] .smokeB {
+  animation: driftB 15s ease-in-out infinite;
+}
+
+.hero[data-ready="true"] .codeLayer {
+  animation: fade 1.4s var(--ease) 620ms both;
+}
+
+.hero[data-ready="true"] .code {
+  animation: drift 48s linear infinite;
+}
+
+.hero[data-ready="true"] .glowShift {
+  animation: fade 1.2s var(--ease) 420ms both;
+}
+
+.hero[data-ready="true"] .glow {
+  animation: breathe 5.4s ease-in-out 1.4s infinite;
+}
+
+/* ============================================================
+   responsivo
+   ============================================================ */
+
+@media (max-width: 64rem) {
+  .stage {
+    width: 74%;
+    inset-inline-end: -12%;
+  }
+
+  .content {
+    width: min(100%, 34rem);
+  }
+
+  .title {
+    font-size: clamp(2.2rem, 7.4vw, 3.6rem);
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .burger {
+    display: grid;
+    margin-inline-start: auto;
+  }
+
+  .cta {
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 46rem) {
+  .hero {
+    grid-template-rows: auto auto auto;
+    min-height: auto;
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .content {
+    order: 1;
+    width: 100%;
+    padding-block: 2rem 0;
+    /* No estreito o conteúdo não recua ao rolar: some da vista antes. */
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* No estreito o objeto desce para baixo do texto. */
+  .stage {
+    position: relative;
+    order: 2;
+    inset: auto;
+    width: 100%;
+    height: 54svh;
+    margin-top: -0.5rem;
+  }
+
+  /* No estreito a atmosfera pesada sai: sobra a rocha da base. */
+  .cliff,
+  .smokeB {
+    display: none;
+  }
+
+  .ridge {
+    height: 30%;
+    z-index: 2;
+  }
+
+  .glowShift {
+    inset-block-start: 68%;
+    width: 34rem;
+  }
+
+  .code {
+    inset-inline-start: 4%;
+    font-size: 0.7rem;
+  }
+
+  .title {
+    font-size: clamp(2rem, 9.5vw, 3rem);
+  }
+
+  .metrics {
+    gap: 1.4rem 1.6rem;
+  }
+
+  .metrics > li {
+    flex: 1 1 8rem;
+  }
+
+  .scrollHint {
+    order: 3;
+    padding-block: 1.5rem;
+  }
+}
+
+/* ============================================================
+   movimento reduzido — mantém a leitura, corta o movimento
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero *,
+  .hero *::before,
+  .hero *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .codeLayer,
+  .glowShift,
+  .smoke,
+  .ridge,
+  .underglow,
+  .stage,
+  .brand,
+  .menu a,
+  .cta,
+  .burger,
+  .kicker,
+  .lede,
+  .actions,
+  .metrics,
+  .scrollHint {
+    opacity: 1;
+  }
+
+  .cliff {
+    opacity: 0.68;
+  }
+
+  .codeLayer,
+  .glowShift,
+  .smoke,
+  .cliff,
+  .ridge,
+  .underglow,
+  .content {
+    will-change: auto;
+    transform: none;
+  }
+
+  .glowShift {
+    transform: translateY(-50%);
+  }
+
+  .line {
+    transform: none;
+  }
+
+  .wipe {
+    clip-path: none;
+  }
+
+  .content {
+    opacity: 1;
+  }
+}
