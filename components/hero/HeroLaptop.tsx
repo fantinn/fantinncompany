@@ -39,7 +39,9 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
   useEffect(() => () => void baseGeo.dispose(), [baseGeo]);
   useEffect(() => () => void lidGeo.dispose(), [lidGeo]);
 
-  const fit = Math.min(1.15, Math.max(0.55, viewport.width / 4.9));
+  const fit = Math.min(0.94, Math.max(0.48, viewport.width / 5.8));
+  // Acompanha o mesmo degradê do parallax em CSS.
+  const pf = Math.min(1, fit / 0.94);
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -60,13 +62,17 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
     if (r) {
       // Entra pela direita e assenta.
       const enter = 1 - lifted;
-      r.position.x = -0.22 + enter * 2.6;
+      // Recuado da borda direita. Quanto mais estreita a tela, mais ele
+      // se afasta — é lá que a headline chega perto.
+      r.position.x = 0.12 + (1 - pf) * 0.9 + enter * 2.6;
       // Baixo o bastante para pousar na crista, não pairar sobre ela.
-      r.position.y = -0.92 - e.scroll * 0.5;
+      r.position.y = -1.02 - e.scroll * 0.5;
       r.position.z = -enter * 1.2;
 
-      r.rotation.y = -0.46 + e.px * 0.1 - e.scroll * 0.18;
-      r.rotation.x = 0.12 - e.py * 0.05 + e.scroll * 0.1;
+      // O objeto reage como se tivesse massa: amplitude curta, nunca
+      // perseguindo o cursor. Cai junto com a tela.
+      r.rotation.y = -0.46 + e.px * 0.085 * pf - e.scroll * 0.18;
+      r.rotation.x = 0.12 - e.py * 0.042 * pf + e.scroll * 0.1;
       r.rotation.z = 0.032;
       r.scale.setScalar(fit * (0.94 + lifted * 0.06) * (1 - e.scroll * 0.06));
     }
@@ -79,7 +85,7 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
     }
 
     if (shadow.current) {
-      shadow.current.position.set(-0.22, -1.62 - e.scroll * 0.5, 0);
+      shadow.current.position.set(0.12 + (1 - pf) * 0.9, -1.58 - e.scroll * 0.5, 0);
       shadow.current.scale.setScalar(fit);
     }
   });

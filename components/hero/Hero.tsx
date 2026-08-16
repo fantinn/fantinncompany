@@ -267,7 +267,7 @@ export default function Hero() {
           fill
           priority
           sizes="100vw"
-          style={{ objectFit: "cover", objectPosition: "44% 20%" }}
+          style={{ objectFit: "cover", objectPosition: "48% 24%" }}
         />
       </div>
 

@@ -10,6 +10,9 @@
   --pad: clamp(1.5rem, 5vw, 5rem);
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --red: #ec1b2e;
+  /* Fator único de parallax — as camadas mantêm sua proporção entre si
+     e a intensidade cai junto conforme a tela encolhe. */
+  --pf: 1;
 
   position: relative;
   isolation: isolate;
@@ -74,7 +77,11 @@
   overflow: hidden;
   opacity: 0;
   will-change: transform;
-  transform: translate3d(calc(var(--px, 0) * -8px), calc(var(--py, 0) * -8px), 0);
+  transform: translate3d(
+    calc(var(--px, 0) * -8px * var(--pf)),
+    calc(var(--py, 0) * -8px * var(--pf)),
+    0
+  );
 }
 
 .code {
@@ -86,7 +93,7 @@
   font-size: 0.78rem;
   line-height: 1.8;
   /* Precisa ficar no limiar do visível: presente, nunca legível. */
-  color: #0f1013;
+  color: #0c0d0f;
   white-space: pre;
 }
 
@@ -105,7 +112,11 @@
   opacity: 0;
   will-change: transform;
   transform: translateY(-50%)
-    translate3d(calc(var(--px, 0) * -20px), calc(var(--py, 0) * -20px), 0);
+    translate3d(
+      calc(var(--px, 0) * -20px * var(--pf)),
+      calc(var(--py, 0) * -20px * var(--pf)),
+      0
+    );
 }
 
 /* Contido de propósito: virava mancha quando forte. */
@@ -135,7 +146,11 @@
   opacity: 0;
   pointer-events: none;
   will-change: transform;
-  transform: translate3d(calc(var(--px, 0) * -10px), calc(var(--py, 0) * -10px), 0);
+  transform: translate3d(
+    calc(var(--px, 0) * -10px * var(--pf)),
+    calc(var(--py, 0) * -10px * var(--pf)),
+    0
+  );
 }
 
 .smoke span {
@@ -154,8 +169,8 @@
   height: 28rem;
   background: radial-gradient(
     ellipse at 50% 60%,
-    rgba(40, 40, 44, 0.5),
-    rgba(150, 26, 38, 0.09) 46%,
+    rgba(38, 38, 42, 0.52),
+    rgba(140, 24, 36, 0.06) 46%,
     transparent 72%
   );
 }
@@ -184,7 +199,11 @@
   opacity: 0;
   pointer-events: none;
   will-change: transform;
-  transform: translate3d(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -9px), 0);
+  transform: translate3d(
+    calc(var(--px, 0) * -18px * var(--pf)),
+    calc(var(--py, 0) * -9px * var(--pf)),
+    0
+  );
   mask-image: linear-gradient(to right, transparent 30%, #000 52%);
   -webkit-mask-image: linear-gradient(to right, transparent 30%, #000 52%);
 }
@@ -203,7 +222,7 @@
     transparent
   );
   filter: blur(1px);
-  box-shadow: 0 0 18px 3px rgba(236, 27, 46, 0.22);
+  box-shadow: 0 0 16px 3px rgba(236, 27, 46, 0.14);
 }
 
 .beams i:nth-child(1) {
@@ -244,10 +263,15 @@
   height: 66%;
   opacity: 0;
   pointer-events: none;
-  /* Escura e dessaturada: precisa ler como rocha, não como massa vermelha. */
-  filter: blur(4px) saturate(0.5) brightness(0.68);
+  /* Escura e dessaturada: precisa ler como rocha, não como massa vermelha.
+     Existe para dizer "há algo atrás", não para ser olhada. */
+  filter: blur(4.5px) saturate(0.42) brightness(0.6) contrast(0.92);
   will-change: transform;
-  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -8px), 0);
+  transform: translate3d(
+    calc(var(--px, 0) * -14px * var(--pf)),
+    calc(var(--py, 0) * -8px * var(--pf)),
+    0
+  );
   /* Some antes de chegar na coluna de texto. */
   mask-image: linear-gradient(to right, transparent, #000 34%, #000 82%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, #000 34%, #000 82%, transparent);
@@ -262,21 +286,25 @@
   inset-block-end: -3%;
   inset-inline: 0;
   z-index: 4;
-  height: 44%;
+  height: 34%;
   opacity: 0;
   pointer-events: none;
+  /* Contém o vermelho das fissuras sem apagar a textura da pedra. */
+  filter: saturate(0.86) brightness(0.94);
   will-change: transform;
   transform: translate3d(
-    calc(var(--px, 0) * -5px),
-    calc(var(--py, 0) * -3px + var(--sp, 0) * -22px),
+    calc(var(--px, 0) * -5px * var(--pf)),
+    calc(var(--py, 0) * -3px * var(--pf) + var(--sp, 0) * -22px),
     0
   );
+  /* Transição longa: a crista nasce do escuro no centro em vez de
+     começar num corte. */
   mask-image:
-    linear-gradient(to right, transparent 0%, #000 24%),
-    linear-gradient(to bottom, transparent 2%, #000 30%);
+    linear-gradient(to right, transparent 8%, #000 46%),
+    linear-gradient(to bottom, transparent 2%, #000 32%);
   -webkit-mask-image:
-    linear-gradient(to right, transparent 0%, #000 24%),
-    linear-gradient(to bottom, transparent 2%, #000 30%);
+    linear-gradient(to right, transparent 8%, #000 46%),
+    linear-gradient(to bottom, transparent 2%, #000 32%);
   mask-composite: intersect;
   -webkit-mask-composite: source-in;
 }
@@ -297,13 +325,17 @@
   opacity: 0;
   background: radial-gradient(
     ellipse at 50% 50%,
-    rgba(236, 27, 46, 0.34),
-    rgba(236, 27, 46, 0.11) 42%,
+    rgba(236, 27, 46, 0.24),
+    rgba(236, 27, 46, 0.07) 42%,
     transparent 70%
   );
   filter: blur(46px);
   will-change: transform;
-  transform: translate3d(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -8px), 0);
+  transform: translate3d(
+    calc(var(--px, 0) * -16px * var(--pf)),
+    calc(var(--py, 0) * -8px * var(--pf)),
+    0
+  );
 }
 
 /* ---------- camada 4: o objeto ---------- */
@@ -311,9 +343,11 @@
 .stage {
   position: absolute;
   inset-block: 0;
-  inset-inline-end: -2%;
+  /* Estreitado e encostado na borda: o objeto ganha respiro dos dois
+     lados sem alcançar a coluna de texto. */
+  inset-inline-end: 0;
   z-index: 3;
-  width: 64%;
+  width: 54%;
   opacity: 0;
 }
 
@@ -934,13 +968,13 @@
 
 @keyframes fadeCliff {
   to {
-    opacity: 0.42;
+    opacity: 0.34;
   }
 }
 
 @keyframes fadeBeams {
   to {
-    opacity: 0.85;
+    opacity: 0.44;
   }
 }
 
@@ -1020,14 +1054,41 @@
    responsivo
    ============================================================ */
 
-@media (max-width: 64rem) {
+/* Entre 1024px e 1600px a headline ocupa quase metade da largura e o
+   palco precisa recuar, senão o objeto encosta no texto. */
+@media (max-width: 100rem) {
   .stage {
-    width: 74%;
-    inset-inline-end: -12%;
+    width: 48%;
+  }
+}
+
+@media (max-width: 90rem) {
+  .stage {
+    width: 45%;
+  }
+}
+
+@media (max-width: 64rem) {
+  .hero {
+    --pf: 0.55;
+  }
+
+  .stage {
+    width: 66%;
+    inset-inline-end: -8%;
   }
 
   .content {
     width: min(100%, 34rem);
+  }
+
+  /* Menos atmosfera conforme a tela encolhe. */
+  .beams {
+    opacity: 0.28 !important;
+  }
+
+  .ridge {
+    height: 30%;
   }
 
   .title {
@@ -1048,34 +1109,73 @@
   }
 }
 
-@media (max-width: 46rem) {
+/* Abaixo de 896px a headline e o objeto não cabem lado a lado sem
+   colidir — a composição passa a ser vertical. */
+@media (max-width: 56rem) {
   .hero {
-    grid-template-rows: auto auto auto;
+    /* Sem parallax de ponteiro no toque. */
+    --pf: 0;
+    grid-template-rows: none;
+    grid-auto-rows: auto;
     min-height: auto;
+  }
+
+  .header {
+    order: 0;
   }
 
   .cta {
     display: none;
   }
 
+  /* Os filhos viram itens do grid para que o objeto possa entrar entre
+     as ações e as métricas, na ordem pedida para telas estreitas. */
   .content {
-    order: 1;
-    width: 100%;
-    padding-block: 2rem 0;
-    /* No estreito o conteúdo não recua ao rolar: some da vista antes. */
-    opacity: 1;
-    transform: none;
-    will-change: auto;
+    display: contents;
   }
 
-  /* No estreito o objeto desce para baixo do texto. */
+  .kicker,
+  .title,
+  .lede,
+  .actions,
+  .metrics {
+    padding-inline: var(--pad);
+  }
+
+  .kicker {
+    order: 1;
+    margin-top: 1.5rem;
+  }
+
+  .title {
+    order: 2;
+  }
+
+  .lede {
+    order: 3;
+    max-width: none;
+  }
+
+  .actions {
+    order: 4;
+  }
+
   .stage {
     position: relative;
-    order: 2;
+    order: 5;
     inset: auto;
     width: 100%;
-    height: 54svh;
-    margin-top: -0.5rem;
+    height: 52svh;
+    margin-top: 0.5rem;
+  }
+
+  .metrics {
+    order: 6;
+    max-width: none;
+  }
+
+  .scrollHint {
+    order: 7;
   }
 
   /* No estreito a atmosfera pesada sai: sobra a rocha da base. */
@@ -1086,8 +1186,15 @@
   }
 
   .ridge {
-    height: 30%;
+    height: 26%;
     z-index: 2;
+  }
+
+  /* Fumaça bem mais discreta no estreito. */
+  .smokeA {
+    width: 26rem;
+    height: 17rem;
+    opacity: 0.6;
   }
 
   .glowShift {
@@ -1101,20 +1208,28 @@
   }
 
   .title {
-    font-size: clamp(2rem, 9.5vw, 3rem);
+    font-size: clamp(1.95rem, 9vw, 3rem);
+  }
+
+  /* No estreito a frase precisa poder quebrar: manter numa linha só
+     esconderia o fim do texto atrás do recorte. */
+  .line,
+  .wipe {
+    white-space: normal;
   }
 
   .metrics {
-    gap: 1.4rem 1.6rem;
+    gap: 0.85rem;
+    margin-top: 2rem;
   }
 
-  .metrics > li {
-    flex: 1 1 8rem;
+  .metricLabel {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
   }
 
   .scrollHint {
-    order: 3;
-    padding-block: 1.5rem;
+    padding-block: 2rem 1.5rem;
   }
 }
 
