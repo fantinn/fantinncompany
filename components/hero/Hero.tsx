@@ -16,27 +16,6 @@ const MENU = [
   ["Processo", "#processo"],
 ];
 
-const CODE = `function build() {
-  return (
-    <section className="hero">
-      <h1>Sua ideia.</h1>
-      <h1>Nosso código.</h1>
-      <h1>Grandes resultados.</h1>
-    </section>
-  );
-}
-
-const deploy = async (project) => {
-  const build = await compile(project);
-  return ship(build, { region: "sa-east-1" });
-};
-
-export default function Page() {
-  const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
-  return <Hero ready={ready} />;
-}`;
-
 const ICONS = {
   code: "M9.4 7.6 5 12l4.4 4.4M14.6 7.6 19 12l-4.4 4.4",
   target: "M12 3v3M12 18v3M3 12h3M18 12h3M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z",
@@ -187,16 +166,7 @@ export default function Hero() {
       {/* camada 1 — fundo, praticamente imóvel */}
       <div className={s.vignette} aria-hidden="true" />
 
-      {/* camada 2 — código */}
-      <div className={s.codeLayer} aria-hidden="true">
-        <pre className={s.code}>
-          {CODE}
-          {"\n"}
-          {CODE}
-        </pre>
-      </div>
-
-      {/* camada 3 — brilho vermelho. O parallax fica no pai e a
+      {/* camada 2 — brilho vermelho. O parallax fica no pai e a
           respiração no filho, para os dois não brigarem pelo transform. */}
       <div className={s.glowShift} aria-hidden="true">
         <div className={s.glow} />

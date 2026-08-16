@@ -68,36 +68,7 @@
     radial-gradient(80% 70% at 8% 24%, rgba(20, 21, 24, 0.5), transparent 70%);
 }
 
-/* ---------- camada 2: código ---------- */
-
-.codeLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  opacity: 0;
-  will-change: transform;
-  transform: translate3d(
-    calc(var(--px, 0) * -8px * var(--pf)),
-    calc(var(--py, 0) * -8px * var(--pf)),
-    0
-  );
-}
-
-.code {
-  position: absolute;
-  inset-block-start: -12%;
-  inset-inline-start: 46%;
-  margin: 0;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.78rem;
-  line-height: 1.8;
-  /* Precisa ficar no limiar do visível: presente, nunca legível. */
-  color: #0c0d0f;
-  white-space: pre;
-}
-
-/* ---------- camada 3: brilho ---------- */
+/* ---------- camada 2: brilho ---------- */
 
 /* O pai carrega o parallax; o filho, a respiração. Separados, os dois
    não disputam a mesma propriedade a cada quadro. */
@@ -264,8 +235,9 @@
   opacity: 0;
   pointer-events: none;
   /* Escura e dessaturada: precisa ler como rocha, não como massa vermelha.
-     Existe para dizer "há algo atrás", não para ser olhada. */
-  filter: blur(4.5px) saturate(0.42) brightness(0.6) contrast(0.92);
+     Brilho e contraste sobem juntos para a silhueta e a textura
+     aparecerem; a saturação fica onde estava, senão o vermelho volta. */
+  filter: blur(4px) saturate(0.42) brightness(0.72) contrast(1.08);
   will-change: transform;
   transform: translate3d(
     calc(var(--px, 0) * -14px * var(--pf)),
@@ -892,12 +864,6 @@
   }
 }
 
-@keyframes drift {
-  to {
-    transform: translateY(-50%);
-  }
-}
-
 @keyframes breathe {
   0%,
   100% {
@@ -968,7 +934,7 @@
 
 @keyframes fadeCliff {
   to {
-    opacity: 0.34;
+    opacity: 0.39;
   }
 }
 
@@ -1032,14 +998,6 @@
 
 .hero[data-ready="true"] .smokeB {
   animation: driftB 15s ease-in-out infinite;
-}
-
-.hero[data-ready="true"] .codeLayer {
-  animation: fade 1.4s var(--ease) 620ms both;
-}
-
-.hero[data-ready="true"] .code {
-  animation: drift 48s linear infinite;
 }
 
 .hero[data-ready="true"] .glowShift {
@@ -1202,11 +1160,6 @@
     width: 34rem;
   }
 
-  .code {
-    inset-inline-start: 4%;
-    font-size: 0.7rem;
-  }
-
   .title {
     font-size: clamp(1.95rem, 9vw, 3rem);
   }
@@ -1246,7 +1199,6 @@
     transition-duration: 0.01ms !important;
   }
 
-  .codeLayer,
   .glowShift,
   .smoke,
   .ridge,
@@ -1266,10 +1218,9 @@
   }
 
   .cliff {
-    opacity: 0.68;
+    opacity: 0.39;
   }
 
-  .codeLayer,
   .glowShift,
   .smoke,
   .cliff,
