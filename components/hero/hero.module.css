@@ -108,16 +108,17 @@
     translate3d(calc(var(--px, 0) * -20px), calc(var(--py, 0) * -20px), 0);
 }
 
+/* Contido de propósito: virava mancha quando forte. */
 .glow {
   width: 100%;
   height: 100%;
   background: radial-gradient(
     circle,
-    rgba(236, 27, 46, 0.32),
-    rgba(236, 27, 46, 0.07) 40%,
-    transparent 66%
+    rgba(236, 27, 46, 0.16),
+    rgba(236, 27, 46, 0.04) 38%,
+    transparent 64%
   );
-  filter: blur(40px);
+  filter: blur(48px);
 }
 
 /* ---------- rocha ---------- */
@@ -144,30 +145,91 @@
   filter: blur(60px);
 }
 
+/* Fumaça é escura: cinza de carvão com um resto de brasa, nunca
+   um manchão vermelho. */
 .smokeA {
   inset-inline-end: 4%;
-  inset-block-end: 6%;
-  width: 46rem;
-  height: 30rem;
+  inset-block-end: 8%;
+  width: 44rem;
+  height: 28rem;
   background: radial-gradient(
     ellipse at 50% 60%,
-    rgba(236, 27, 46, 0.18),
-    rgba(120, 16, 26, 0.09) 45%,
+    rgba(40, 40, 44, 0.5),
+    rgba(150, 26, 38, 0.09) 46%,
     transparent 72%
   );
 }
 
 .smokeB {
-  inset-inline-end: 28%;
-  inset-block-end: 26%;
-  width: 34rem;
-  height: 22rem;
+  inset-inline-end: 30%;
+  inset-block-end: 28%;
+  width: 32rem;
+  height: 21rem;
   background: radial-gradient(
     ellipse at 40% 50%,
-    rgba(150, 152, 160, 0.08),
-    rgba(90, 92, 100, 0.04) 50%,
+    rgba(30, 31, 35, 0.55),
+    rgba(60, 61, 66, 0.16) 50%,
     transparent 74%
   );
+}
+
+/* ---------- feixes ---------- */
+
+/* Riscos finos e diagonais. Iluminação de ambiente, não protagonista. */
+.beams {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -9px), 0);
+  mask-image: linear-gradient(to right, transparent 30%, #000 52%);
+  -webkit-mask-image: linear-gradient(to right, transparent 30%, #000 52%);
+}
+
+.beams i {
+  position: absolute;
+  display: block;
+  height: 1.5px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(236, 27, 46, 0.5) 30%,
+    rgba(255, 128, 138, 0.85) 52%,
+    rgba(236, 27, 46, 0.4) 70%,
+    transparent
+  );
+  filter: blur(1px);
+  box-shadow: 0 0 18px 3px rgba(236, 27, 46, 0.22);
+}
+
+.beams i:nth-child(1) {
+  inset-block-start: 24%;
+  inset-inline-start: 34%;
+  width: 62%;
+  transform: rotate(-19deg);
+  opacity: 0.75;
+}
+
+.beams i:nth-child(2) {
+  inset-block-start: 41%;
+  inset-inline-start: 48%;
+  width: 48%;
+  transform: rotate(-19deg);
+  opacity: 0.5;
+  height: 1px;
+}
+
+.beams i:nth-child(3) {
+  inset-block-start: 63%;
+  inset-inline-start: 40%;
+  width: 40%;
+  transform: rotate(-19deg);
+  opacity: 0.35;
+  height: 1px;
 }
 
 /* ---------- rocha ao fundo ---------- */
@@ -182,7 +244,8 @@
   height: 66%;
   opacity: 0;
   pointer-events: none;
-  filter: blur(4px) saturate(0.82);
+  /* Escura e dessaturada: precisa ler como rocha, não como massa vermelha. */
+  filter: blur(4px) saturate(0.5) brightness(0.68);
   will-change: transform;
   transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -8px), 0);
   /* Some antes de chegar na coluna de texto. */
@@ -199,7 +262,7 @@
   inset-block-end: -3%;
   inset-inline: 0;
   z-index: 4;
-  height: 30%;
+  height: 44%;
   opacity: 0;
   pointer-events: none;
   will-change: transform;
@@ -209,11 +272,11 @@
     0
   );
   mask-image:
-    linear-gradient(to right, transparent 4%, #000 32%),
-    linear-gradient(to bottom, transparent 2%, #000 34%);
+    linear-gradient(to right, transparent 0%, #000 24%),
+    linear-gradient(to bottom, transparent 2%, #000 30%);
   -webkit-mask-image:
-    linear-gradient(to right, transparent 4%, #000 32%),
-    linear-gradient(to bottom, transparent 2%, #000 34%);
+    linear-gradient(to right, transparent 0%, #000 24%),
+    linear-gradient(to bottom, transparent 2%, #000 30%);
   mask-composite: intersect;
   -webkit-mask-composite: source-in;
 }
@@ -222,13 +285,14 @@
 
 /* Fica atrás do laptop e vaza pelas bordas de baixo — é o que faz ele
    pertencer à cena em vez de flutuar recortado sobre o fundo. */
+/* Achatado e na altura da crista: é a emenda entre o aparelho e a rocha. */
 .underglow {
   position: absolute;
-  inset-inline-end: 10%;
-  inset-block-end: 14%;
+  inset-inline-end: 12%;
+  inset-block-end: 27%;
   z-index: 2;
-  width: min(42rem, 62vw);
-  height: 15rem;
+  width: min(40rem, 60vw);
+  height: 10rem;
   pointer-events: none;
   opacity: 0;
   background: radial-gradient(
@@ -247,9 +311,9 @@
 .stage {
   position: absolute;
   inset-block: 0;
-  inset-inline-end: 0;
+  inset-inline-end: -2%;
   z-index: 3;
-  width: 56%;
+  width: 64%;
   opacity: 0;
 }
 
@@ -870,7 +934,13 @@
 
 @keyframes fadeCliff {
   to {
-    opacity: 0.68;
+    opacity: 0.42;
+  }
+}
+
+@keyframes fadeBeams {
+  to {
+    opacity: 0.85;
   }
 }
 
@@ -907,6 +977,10 @@
 
 .hero[data-ready="true"] .ridge {
   animation: fade 1.1s var(--ease) 480ms both;
+}
+
+.hero[data-ready="true"] .beams {
+  animation: fadeBeams 1.3s var(--ease) 560ms both;
 }
 
 .hero[data-ready="true"] .underglow {
@@ -1006,7 +1080,8 @@
 
   /* No estreito a atmosfera pesada sai: sobra a rocha da base. */
   .cliff,
-  .smokeB {
+  .smokeB,
+  .beams {
     display: none;
   }
 
@@ -1061,6 +1136,7 @@
   .smoke,
   .ridge,
   .underglow,
+  .beams,
   .stage,
   .brand,
   .menu a,
@@ -1084,9 +1160,17 @@
   .cliff,
   .ridge,
   .underglow,
+  .beams,
   .content {
     will-change: auto;
     transform: none;
+  }
+
+  /* A rotação é parte do desenho do feixe, não movimento. */
+  .beams i:nth-child(1),
+  .beams i:nth-child(2),
+  .beams i:nth-child(3) {
+    transform: rotate(-19deg);
   }
 
   .glowShift {

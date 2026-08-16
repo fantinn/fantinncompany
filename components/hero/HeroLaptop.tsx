@@ -39,7 +39,7 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
   useEffect(() => () => void baseGeo.dispose(), [baseGeo]);
   useEffect(() => () => void lidGeo.dispose(), [lidGeo]);
 
-  const fit = Math.min(0.9, Math.max(0.45, viewport.width / 6.2));
+  const fit = Math.min(1.15, Math.max(0.55, viewport.width / 4.9));
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -60,13 +60,14 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
     if (r) {
       // Entra pela direita e assenta.
       const enter = 1 - lifted;
-      r.position.x = 0.1 + enter * 2.6;
-      r.position.y = -0.34 - e.scroll * 0.5;
+      r.position.x = -0.22 + enter * 2.6;
+      // Baixo o bastante para pousar na crista, não pairar sobre ela.
+      r.position.y = -0.92 - e.scroll * 0.5;
       r.position.z = -enter * 1.2;
 
-      r.rotation.y = -0.5 + e.px * 0.1 - e.scroll * 0.18;
-      r.rotation.x = 0.1 - e.py * 0.05 + e.scroll * 0.1;
-      r.rotation.z = 0.028;
+      r.rotation.y = -0.46 + e.px * 0.1 - e.scroll * 0.18;
+      r.rotation.x = 0.12 - e.py * 0.05 + e.scroll * 0.1;
+      r.rotation.z = 0.032;
       r.scale.setScalar(fit * (0.94 + lifted * 0.06) * (1 - e.scroll * 0.06));
     }
 
@@ -78,7 +79,7 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
     }
 
     if (shadow.current) {
-      shadow.current.position.set(0.1, -1.04 - e.scroll * 0.5, 0);
+      shadow.current.position.set(-0.22, -1.62 - e.scroll * 0.5, 0);
       shadow.current.scale.setScalar(fit);
     }
   });
@@ -114,10 +115,10 @@ export default function HeroLaptop({ pointer, scrollRef, reduced }: Props) {
       <group ref={shadow}>
         <ContactShadows
           position={[0, 0, 0]}
-          opacity={0.55}
-          scale={10}
-          blur={3}
-          far={3}
+          opacity={0.72}
+          scale={12}
+          blur={3.4}
+          far={3.4}
           resolution={512}
           color="#000000"
         />
